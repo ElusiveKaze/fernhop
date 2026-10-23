@@ -1,0 +1,17 @@
+{
+  "name": "fernhop",
+  "version": "1.1.0",
+  "description": "OpenCode bridge for Claude: an MCP server that lets Claude (or any MCP client) delegate tasks to OpenCode through one shared, self-healing opencode serve.",
+  "type": "module",
+  "main": "bridge.mjs",
+  "bin": { "fernhop": "bridge.mjs" },
+  "files": ["bridge.mjs", "core.mjs", "examples/", "README.md", "README.zh-CN.md", "CHANGELOG.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node test/run-tests.mjs --mock",
+    "test:live": "node test/run-tests.mjs --live",
+    "build:mcpb": "node scripts/build-mcpb.mjs"
+  },
+  "keywords": ["mcp", "model-context-protocol", "opencode", "opencode-bridge", "claude", "agent", "delegation"],
+  "license": "MIT"
+}

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "opencode": {
+      "command": "node",
+      "args": ["/absolute/path/to/fernhop/bridge.mjs"],
+      "env": {
+        "OPENCODE_BLOCK_MS": "50000"
+      }
+    }
+  }
+}

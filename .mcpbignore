@@ -1,0 +1,6 @@
+# Used by the official packer (npx @anthropic-ai/mcpb pack). scripts/build-mcpb.mjs uses its own list.
+.github/
+test/
+scripts/
+dist/
+examples/claude_desktop_config.json

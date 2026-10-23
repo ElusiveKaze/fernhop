@@ -1,0 +1,42 @@
+# Push a tag like v1.1.0 (matching package.json and manifest.json) to publish a release:
+#   - a GitHub Release with the .mcpb installer attached
+#   - the npm package, if the repository has an NPM_TOKEN secret
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Tag matches the version
+        run: |
+          v=$(node -p "require('./package.json').version")
+          test "v$v" = "$GITHUB_REF_NAME" || { echo "tag $GITHUB_REF_NAME does not match package.json $v"; exit 1; }
+
+      - run: node test/run-tests.mjs --mock
+      - run: node scripts/build-mcpb.mjs dist
+
+      - name: GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/*.mcpb --title "$GITHUB_REF_NAME" --generate-notes
+
+      - name: npm publish
+        if: env.NPM_TOKEN != ''
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/mcpb/main/schemas/mcpb-manifest-v0.3.schema.json",
+  "manifest_version": "0.3",
+  "name": "fernhop",
+  "display_name": "Fernhop",
+  "version": "1.1.0",
+  "description": "OpenCode bridge for Claude: hand tasks to OpenCode and the models you set up there, then review the result.",
+  "long_description": "Claude plans, delegates and reviews; [OpenCode](https://opencode.ai) does the hands-on work with whatever model you point it at, often a much cheaper one.\n\n**Before installing:** install OpenCode 2.x and configure at least one model in it. Nothing else is needed: the bridge starts and shares one `opencode serve` in the background, reconnects by itself if it dies, and follows OpenCode upgrades.\n\n**Tools:** `run`, `check`, `review_changes`, `session_list`, `interrupt`, `provider_models`, `status`.\n\nAll settings are optional. Model aliases (for example `pro` = the newest model whose id contains `pro`) go in `~/.fernhop/config.json`; see the README.",
+  "author": {
+    "name": "fernhop contributors"
+  },
+  "license": "MIT",
+  "keywords": ["opencode", "opencode bridge", "delegate", "coding agent", "mcp"],
+  "server": {
+    "type": "node",
+    "entry_point": "bridge.mjs",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/bridge.mjs"],
+      "env": {
+        "OPENCODE_EXECUTABLE": "${user_config.opencode_executable}",
+        "FERNHOP_CONFIG": "${user_config.alias_config}",
+        "OPENCODE_PORT": "${user_config.port}"
+      }
+    }
+  },
+  "tools": [
+    { "name": "run", "description": "Dispatch a task to OpenCode; waits up to ~50 s, then returns the result or a session id to keep waiting on." },
+    { "name": "check", "description": "Status and latest output of a session; can wait for it to finish." },
+    { "name": "review_changes", "description": "Files changed by a session, or git status of a directory." },
+    { "name": "session_list", "description": "Recent OpenCode sessions with outcome, model and directory." },
+    { "name": "interrupt", "description": "Stop a running session." },
+    { "name": "provider_models", "description": "Models by provider, the default model, and your aliases." },
+    { "name": "status", "description": "Bridge health: versions, the serve in use, running tasks, recent errors; can restart the serve." }
+  ],
+  "tools_generated": false,
+  "user_config": {
+    "opencode_executable": {
+      "type": "file",
+      "title": "OpenCode executable",
+      "description": "Optional. Leave empty to find it automatically. On Windows choose opencode.exe inside the npm package folder, not opencode.cmd.",
+      "required": false
+    },
+    "alias_config": {
+      "type": "file",
+      "title": "Model alias file",
+      "description": "Optional. A JSON file with model aliases. Leave empty to use ~/.fernhop/config.json if it exists.",
+      "required": false
+    },
+    "port": {
+      "type": "number",
+      "title": "First port",
+      "description": "Port for the shared opencode serve. If it is taken, the next 9 ports are tried.",
+      "default": 4096,
+      "min": 1024,
+      "max": 65000,
+      "required": false
+    }
+  },
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "node": ">=18.0.0" }
+  }
+}

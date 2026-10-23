@@ -1,0 +1,20 @@
+{
+  "aliases": {
+    "pro": {
+      "provider": "acme",
+      "match": "pro",
+      "fallback": "acme/model-pro-0612",
+      "label": "strongest model on the team key"
+    },
+    "fast": {
+      "provider": "acme",
+      "match": "fast|flash",
+      "label": "cheap and quick"
+    },
+    "free": "opencode/some-free-model"
+  },
+  "providerLabels": {
+    "acme": "team API",
+    "opencode": "OpenCode free tier"
+  }
+}
