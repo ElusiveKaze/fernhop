@@ -1,5 +1,7 @@
 # fernhop
 
+[![npm](https://img.shields.io/npm/v/fernhop)](https://www.npmjs.com/package/fernhop)
+
 [English](README.md) · **中文**
 
 fernhop 是给 Claude 用的 OpenCode 桥：一个 MCP 服务器，让 Claude（Claude 桌面版、Claude Code 或任何 MCP 客户端）把任务交给
@@ -29,7 +31,8 @@ Claude ──MCP（stdio）──> fernhop ──HTTP──> opencode serve ─�
 
 ## 安装
 
-先装好 OpenCode 2.x，并在里面配置好至少一个模型。然后任选一种方式：
+先装好 OpenCode 2.x，并在里面配置好至少一个模型。然后任选一种方式。fernhop 已发布到 npm，包名就是
+[`fernhop`](https://www.npmjs.com/package/fernhop)；下面的 `npx` 命令会直接从 npm 拉取，不用事先安装。
 
 ### Claude 桌面版：一键安装
 
@@ -58,6 +61,18 @@ claude mcp add --scope user opencode -- npx -y fernhop
 ```json
 { "mcpServers": { "opencode": { "command": "npx", "args": ["-y", "fernhop"] } } }
 ```
+
+### 用 npm 全局安装
+
+不想每次启动都经过 npx 的话，可以先装一次：
+
+```sh
+npm install -g fernhop
+```
+
+装好后 PATH 里会多一个 `fernhop` 命令，把上面的 `npx -y fernhop` 换成它就行，例如
+`claude mcp add --scope user opencode -- fernhop`。全局安装不会自动更新：要更新就运行
+`npm install -g fernhop@latest`。
 
 ### 从源码安装
 
@@ -229,7 +244,7 @@ fernhop 在 1.1.0 之前叫 `opencode-bridge`。旧的安装照常能用：只�
 ## 卸载
 
 删除扩展（*设置 → 扩展*）或客户端配置里的这个服务器，结束正在运行的 `opencode serve`，再删除
-`~/.fernhop`（源码安装的话把仓库文件夹也删掉）。
+`~/.fernhop`（源码安装的话把仓库文件夹也删掉）。用 npm 全局安装的，再运行 `npm uninstall -g fernhop`。
 
 ## 开发
 

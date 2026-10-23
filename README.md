@@ -1,5 +1,7 @@
 # fernhop
 
+[![npm](https://img.shields.io/npm/v/fernhop)](https://www.npmjs.com/package/fernhop)
+
 **English** · [中文](README.zh-CN.md)
 
 fernhop is an OpenCode bridge for Claude: an MCP server that lets Claude (Claude Desktop,
@@ -35,7 +37,9 @@ Zero dependencies, one Node.js process, built to keep working without babysittin
 
 ## Install
 
-You need OpenCode 2.x with at least one model configured. Then pick one of these.
+You need OpenCode 2.x with at least one model configured. Then pick one of these. fernhop is
+published on npm as [`fernhop`](https://www.npmjs.com/package/fernhop); the `npx` commands below
+fetch it from there, so there is nothing to install beforehand.
 
 ### Claude Desktop: one click
 
@@ -65,6 +69,18 @@ Run `npx -y fernhop` as a stdio server:
 ```json
 { "mcpServers": { "opencode": { "command": "npx", "args": ["-y", "fernhop"] } } }
 ```
+
+### Global install with npm
+
+If you'd rather not go through npx on every start, install the package once:
+
+```sh
+npm install -g fernhop
+```
+
+This puts a `fernhop` command on your PATH. Use it in place of `npx -y fernhop` above, e.g.
+`claude mcp add --scope user opencode -- fernhop`. A global install doesn't update by itself: run
+`npm install -g fernhop@latest` to update.
 
 ### From source
 
@@ -255,7 +271,7 @@ errors from `bridge.log`.
 
 Remove the extension (*Settings → Extensions*) or the server entry from your client's config, end
 any running `opencode serve`, and delete `~/.fernhop` (and the repository folder if you
-installed from source).
+installed from source). If you installed globally with npm, also run `npm uninstall -g fernhop`.
 
 ## Development
 
